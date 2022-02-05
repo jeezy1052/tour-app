@@ -1,28 +1,68 @@
 import React from 'react'
-import { Paper, Grid, Typography, Box } from '@mui/material'
+import { Paper, Grid, Typography, Box, Rating, createTheme, ThemeProvider } from '@mui/material'
 import { AccessTime } from '@mui/icons-material'
-import BackImage from '../n1.jpg'
 
-const TourCard = () => {
+
+const theme = createTheme({
+  components: {
+    MuiTypography: {
+      variants: [
+        {
+          props: {
+            variant: "body2"
+          },
+          style: {
+            fontSize: 11,
+          },
+        },
+        {
+          props: {
+            variant: "body3"
+          },
+          style: {
+            fontSize: 10,
+            
+          },
+        },
+      ],
+    },
+  },
+});
+
+const TourCard = ({tour}) => {
   return (
     <Grid item xs={3}>
+    <ThemeProvider theme={theme}>
       <Paper elevation={3}>
-        <img src={BackImage} className="img" alt="" />
+        <img src={tour.image} className="img" alt="" />
         <Box paddingX={1}>
-          <Typography component="h2" variant="subtitle1">Immerse into the Falls</Typography>
+          <Typography component="h2" variant="subtitle1">{tour.name}</Typography>
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
             }} 
           >  
-            <Typography variant="p" component="body2">
-              5 hours
-            </Typography>
-            <AccessTime />
+            <AccessTime sx={{width: 12.5}} />
+            <Typography variant="p" component="body2" marginLeft={0.5}>{tour.duration} hours</Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }} 
+            marginTop={3}
+          >  
+            <Rating readOnly value={tour.rating} name="read-only" precision={0.5} size="small" />
+            <Typography variant="body2" component="p" marginLeft={0.5}>{tour.rating}</Typography>
+            <Typography variant="body3" component="p" marginLeft={1.5}>({tour.numberOfReviews} reviews)</Typography>
+          </Box>
+          <Box>
+          <Typography variant="h6" component="h3" marginTop={0}>From C ${tour.price}</Typography>
           </Box>
         </Box>
       </Paper>
+    </ThemeProvider>
     </Grid>
   )
 }
